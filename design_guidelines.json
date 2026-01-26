@@ -1,0 +1,145 @@
+{
+  "identity": {
+    "name": "StudyHub FB",
+    "description": "A high-performance intelligent study platform for vestibular preparation.",
+    "archetype": "The Performance Pro (Archetype 2) + Swiss Clarity",
+    "emotional_tone": "Authoritative, Focused, Intelligent, Efficient",
+    "design_principles": [
+      "Fusion: Academic Rigor x Tech Efficiency",
+      "Content is King: Questions and data take center stage",
+      "Density: High information density for power users (students)",
+      "Contrast: Stark contrast for readability during long study sessions"
+    ]
+  },
+  "typography": {
+    "primary_font": "Inter",
+    "heading_font": "Outfit",
+    "mono_font": "JetBrains Mono",
+    "weights": {
+      "light": 300,
+      "regular": 400,
+      "medium": 500,
+      "bold": 700,
+      "black": 900
+    },
+    "usage": {
+      "headings": "Outfit, font-bold, tracking-tight. Use for page titles and major section headers.",
+      "body": "Inter, font-regular, leading-relaxed. Use for questions, explanations, and general text.",
+      "data": "JetBrains Mono, font-medium. Use for timers, scores, rankings, and statistics.",
+      "ui_labels": "Inter, font-medium, tracking-wide, uppercase. Use for small labels and navigation."
+    }
+  },
+  "colors": {
+    "palette": {
+      "primary": {
+        "light": "#1E3A8A",
+        "dark": "#3B82F6",
+        "name": "Academic Blue"
+      },
+      "secondary": {
+        "light": "#F59E0B",
+        "dark": "#FBBF24",
+        "name": "Achievement Yellow"
+      },
+      "background": {
+        "light": "#FFFFFF",
+        "dark": "#020617",
+        "name": "Paper White / Deep Void"
+      },
+      "surface": {
+        "light": "#F8FAFC",
+        "dark": "#0F172A",
+        "name": "Slate Surface"
+      },
+      "text": {
+        "light": "#0F172A",
+        "dark": "#F8FAFC",
+        "name": "Ink / Chalk"
+      },
+      "border": {
+        "light": "#E2E8F0",
+        "dark": "#1E293B",
+        "name": "Structural Grey"
+      }
+    },
+    "semantic": {
+      "success": "#10B981",
+      "error": "#EF4444",
+      "warning": "#F59E0B",
+      "info": "#3B82F6",
+      "ai_accent": "#8B5CF6"
+    }
+  },
+  "layout": {
+    "grid_system": "Bento Grid (Mode B)",
+    "container": {
+      "max_width": "max-w-7xl",
+      "padding": "px-4 sm:px-6 lg:px-8"
+    },
+    "spacing": {
+      "section_gap": "gap-8 lg:gap-12",
+      "component_gap": "gap-4",
+      "internal_padding": "p-6"
+    },
+    "border_radius": {
+      "default": "rounded-lg",
+      "card": "rounded-xl",
+      "button": "rounded-md"
+    }
+  },
+  "components": {
+    "buttons": {
+      "style": "Sharp corners or small radius (rounded-md). High contrast.",
+      "hover": "Transform: translateY(-1px), Shadow: shadow-md",
+      "variants": {
+        "primary": "bg-primary text-primary-foreground hover:bg-primary/90",
+        "secondary": "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        "outline": "border-2 border-input bg-background hover:bg-accent hover:text-accent-foreground"
+      }
+    },
+    "cards": {
+      "style": "Flat background, 1px subtle border, no shadow by default. Hover: shadow-lg, border-primary/20.",
+      "content": "Padding: p-6. Header: border-b border-border/50 pb-4 mb-4."
+    },
+    "inputs": {
+      "style": "High contrast borders. Focus: ring-2 ring-primary ring-offset-2.",
+      "background": "bg-background"
+    },
+    "navigation": {
+      "sidebar": "Fixed left, dark mode by default (even in light theme) for contrast.",
+      "header": "Glassmorphism: bg-background/80 backdrop-blur-md border-b."
+    }
+  },
+  "visual_enhancers": {
+    "glassmorphism": "Use for sticky headers and overlays. backdrop-blur-xl bg-white/70 (light) or bg-black/60 (dark).",
+    "gradients": "Use sparingly. Only for 'AI' features or 'Premium' states. No full-screen gradients.",
+    "shadows": "Layered shadows. shadow-sm for UI elements, shadow-xl for modals.",
+    "textures": "Subtle noise overlay on the dashboard background to reduce digital flatness."
+  },
+  "assets": {
+    "images": {
+      "hero_student": "https://images.unsplash.com/photo-1767102060241-130cb9260718?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTB8MHwxfHNlYXJjaHwxfHxzdHVkZW50JTIwc3R1ZHlpbmclMjBmb2N1c2VkJTIwbGlicmFyeXxlbnwwfHx8fDE3Njk0NDE1ODB8MA&ixlib=rb-4.1.0&q=85",
+      "student_reading": "https://images.unsplash.com/photo-1766506075741-325cd3f44fea?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTB8MHwxfHNlYXJjaHwyfHxzdHVkZW50JTIwc3R1ZHlpbmclMjBmb2N1c2VkJTIwbGlicmFyeXxlbnwwfHx8fDE3Njk0NDE1ODB8MA&ixlib=rb-4.1.0&q=85",
+      "abstract_tech_bg": "https://images.unsplash.com/photo-1762951566390-e35eb7dfe9c5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxNzV8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGdlb21ldHJpYyUyMHRlY2hub2xvZ3klMjBiYWNrZ3JvdW5kJTIwYmx1ZXxlbnwwfHx8fDE3Njk0NDE1ODV8MA&ixlib=rb-4.1.0&q=85",
+      "brand_texture": "https://images.unsplash.com/photo-1761624159387-5f9d883b4415?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA3MDR8MHwxfHNlYXJjaHwzfHxtb2Rlcm4lMjBlZHVjYXRpb24lMjBsb2dvJTIwYmx1ZXxlbnwwfHx8fDE3Njk0NDE1ODN8MA&ixlib=rb-4.1.0&q=85"
+    },
+    "icons": {
+      "library": "lucide-react",
+      "style": "Stroke width 1.5px (thin/elegant). Size 20px for UI, 24px for nav."
+    }
+  },
+  "universal_guidelines": {
+    "general": [
+      "Avoid 'AI Slop': No generic centered layouts or default Vercel styles.",
+      "Dark Mode First: Even if light mode is default, design the structure to support dark mode perfectly.",
+      "Micro-interactions: Every button must have a hover state. Every page transition must be smooth.",
+      "Data-TestID: All interactive elements MUST have data-testid attributes."
+    ],
+    "anti_patterns": [
+      "No purple/teal gradients unless specifically for AI features.",
+      "No 'Inter' for headings.",
+      "No center-aligned text for long paragraphs."
+    ]
+  },
+  "instructions_to_main_agent": "Implement the dashboard using the 'Bento Grid' layout. Use the 'Outfit' font for all headings to give it a distinct character. Ensure the 'Question Bank' feels like a focused reading environment (like Notion or Medium). Use the provided image URLs for the landing page and dashboard placeholders."
+}
