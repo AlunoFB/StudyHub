@@ -1,131 +1,163 @@
 import numpy as np
 import random
+import joblib
+import os
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import make_pipeline
 
 # ==============================================================================
-# 1. O GERADOR DE DADOS SINTÉTICOS (A Mágica dos 3k)
+# CLASSE DA IA COM MEMÓRIA E INTELIGÊNCIA AMPLIADA
 # ==============================================================================
-def gerar_dataset_monstruoso(quantidade=3000):
-    dados = []
-    
-    # --- Templates para MATEMÁTICA (Gera milhares de combinações únicas) ---
-    print(f"⚙️ Gerando {quantidade} contextos de treinamento...")
-    
-    for _ in range(quantidade // 4): # 25% do dataset
-        a = random.randint(1, 100)
-        b = random.randint(1, 100)
-        operacoes = [
-            (f"Quanto é {a} + {b}?", "matematica"),
-            (f"Calcule {a} vezes {b}", "matematica"),
-            (f"Qual a raiz quadrada de {a}?", "matematica"),
-            (f"Resolva: {a} / {b}", "matematica"),
-            (f"A soma de {a} com {b}", "matematica"),
-            (f"Me ajude com essa conta: {a} - {b}", "matematica")
-        ]
-        dados.append(random.choice(operacoes))
-
-    # --- Templates para HISTÓRIA DO BRASIL ---
-    sujeitos_hist = ["Dom Pedro", "Cabral", "Tiradentes", "Getúlio Vargas", "Deodoro"]
-    acoes_hist = ["descobriu", "proclamou", "morreu", "governou", "nasceu"]
-    complementos_hist = ["o Brasil", "a República", "na independência", "no golpe", "em 1500"]
-    
-    for _ in range(quantidade // 4):
-        frase = f"Quem {random.choice(acoes_hist)} {random.choice(complementos_hist)}?"
-        dados.append((frase, "historia"))
-        dados.append((f"Fale sobre {random.choice(sujeitos_hist)}", "historia"))
-
-    # --- Templates para BIOLOGIA/CIÊNCIAS ---
-    conceitos = ["mitocôndria", "DNA", "célula", "fotossíntese", "osmose", "proteína", "vírus"]
-    perguntas_bio = ["O que é", "Defina", "Qual a função da", "Explique o conceito de", "Resumo sobre"]
-    
-    for _ in range(quantidade // 4):
-        conceito = random.choice(conceitos)
-        pergunta = random.choice(perguntas_bio)
-        dados.append((f"{pergunta} {conceito}?", "biologia"))
-
-    # --- Templates para SOCIAL/CHIT-CHAT ---
-    saudacoes = ["Oi", "Olá", "E aí", "Bom dia", "Boa tarde", "Fala tu"]
-    perguntas_pessoais = ["quem é você", "qual seu nome", "voce é uma ia", "quem te criou"]
-    
-    for _ in range(quantidade // 4):
-        if random.random() > 0.5:
-            dados.append((random.choice(saudacoes), "cumprimento"))
+class IASupremaFB:
+    def __init__(self, model_path='cerebro_fb.pkl'):
+        self.model_path = model_path
+        self.last_subject = None  # Memória de curto prazo
+        self.last_category = None
+        
+        if os.path.exists(self.model_path):
+            self.load_model()
         else:
-            dados.append((random.choice(perguntas_pessoais), "identidade"))
+            self.train_new_model()
 
-    random.shuffle(dados)
-    return dados
+    def gerar_dataset_gigante(self):
+        """Gera mais de 3000 contextos para treinamento."""
+        print("🛠️ Gerando base de conhecimento de elite (3000+ contextos)...")
+        dados = []
+        
+        # --- MATEMÁTICA & FÍSICA (Cálculos dinâmicos) ---
+        for _ in range(800):
+            a, b = random.randint(1, 1000), random.randint(1, 1000)
+            dados.append((f"Quanto é {a} + {b}?", "exatas"))
+            dados.append((f"Calcule a força de uma massa {a} com aceleração {b}", "exatas"))
+            dados.append((f"Qual a velocidade média de {a} km em {b} horas?", "exatas"))
+            dados.append((f"Fórmula de Bhaskara para delta {a}", "exatas"))
+            dados.append((f"Segunda lei de Newton em {a} newtons", "exatas"))
+
+        # --- BIOLOGIA (Foco em Citologia e Genética) ---
+        bios = ["mitocôndria", "ribossomo", "complexo de golgi", "DNA", "RNA", "meiose", "mitose"]
+        verbos_bio = ["O que faz o", "Explique a", "Função do", "Onde fica o", "Defina"]
+        for _ in range(700):
+            item = random.choice(bios)
+            dados.append((f"{random.choice(verbos_bio)} {item}?", "biologia"))
+
+        # --- HISTÓRIA & GEOGRAFIA ---
+        temas_hist = ["Revolução Francesa", "Ditadura Militar", "Era Vargas", "Guerra Fria", "Tratado de Tordesilhas"]
+        for _ in range(700):
+            tema = random.choice(temas_hist)
+            dados.append((f"O que foi a {tema}?", "humanas"))
+            dados.append((f"Principais causas da {tema}", "humanas"))
+            dados.append((f"Quem participou do {tema}?", "humanas"))
+
+        # --- LITERATURA & PORTUGUÊS ---
+        autores = ["Machado de Assis", "Guimarães Rosa", "Clarice Lispector", "José de Alencar"]
+        obras = ["Dom Casmurro", "Grande Sertão Veredas", "A Hora da Estrela", "Iracema"]
+        for _ in range(600):
+            dados.append((f"Quem escreveu {random.choice(obras)}?", "literatura"))
+            dados.append((f"Estilo literário de {random.choice(autores)}", "literatura"))
+            dados.append((f"O que é uma metáfora?", "literatura"))
+
+        # --- CHIT-CHAT & IDENTIDADE ---
+        for _ in range(300):
+            dados.append(("Quem é você?", "identidade"))
+            dados.append(("Qual o seu nome?", "identidade"))
+            dados.append(("Oi", "social"))
+            dados.append(("E aí, beleza?", "social"))
+            
+        random.shuffle(dados)
+        return dados
+
+    def train_new_model(self):
+        dados = self.gerar_dataset_gigante()
+        X = [d[0] for d in dados]
+        y = [d[1] for d in dados]
+        
+        self.model = make_pipeline(CountVectorizer(), MultinomialNB())
+        print("🧠 Treinando o cérebro... Aguarde, estou estudando para o ITA.")
+        self.model.fit(X, y)
+        
+        joblib.dump(self.model, self.model_path)
+        print(f"✅ Modelo salvo em {self.model_path}")
+
+    def load_model(self):
+        print("💾 Carregando conhecimento prévio do disco...")
+        self.model = joblib.load(self.model_path)
+
+    def responder(self, input_usuario):
+        # 1. Analisar Intenção
+        categoria = self.model.predict([input_usuario])[0]
+        probabilidades = self.model.predict_proba([input_usuario])
+        confianca = np.max(probabilidades)
+
+        # 2. Lógica da Memória de Curto Prazo
+        # Se o usuário usar pronomes ou frases curtas, recorremos ao contexto anterior
+        pronomes = ["ele", "ela", "disso", "daquilo", "sobre isso", "explica mais"]
+        if any(p in input_usuario.lower() for p in pronomes) or confianca < 0.3:
+            if self.last_category:
+                categoria = self.last_category
+                prefixo_memoria = "📚 (Lembrando que ainda estamos falando de " + categoria + "): "
+            else:
+                prefixo_memoria = ""
+        else:
+            prefixo_memoria = ""
+
+        self.last_category = categoria # Atualiza a memória
+
+        # 3. Gerador de Respostas Complexas
+        respostas = {
+            "exatas": [
+                "Isso envolve cálculos precisos. Como um bom aluno do FB, você deveria saber que a física explica o universo!",
+                "Cálculo detectado. Se for queda livre, não esqueça da gravidade (g ≈ 10m/s² para facilitar a vida).",
+                "Matemática é a linguagem de Deus. Delta negativo? Ih, caiu nos complexos."
+            ],
+            "biologia": [
+                "Biologia! Se tem vida, tem DNA. Se tem DNA, tem mitocôndria fazendo o trabalho pesado.",
+                "Isso é biológico. Lembre-se que na prova do FB, os detalhes das organelas salvam vidas.",
+                "Fisiologia ou genética? De qualquer forma, a resposta está na evolução."
+            ],
+            "humanas": [
+                "Humanas? Interessante. O contexto histórico molda quem somos hoje.",
+                "História e Geografia são a base para entender por que o mundo está essa bagunça.",
+                "Lembre-se das datas, mas foque nos processos sociais. É o que o ENEM gosta."
+            ],
+            "literatura": [
+                "Ah, a arte das palavras. Machado de Assis teria orgulho (ou não) dessa sua pergunta.",
+                "Literatura é a alma da língua. Já leu 'Dom Casmurro' hoje ou vai dizer que Capitu não traiu?",
+                "Analisar o eu-lírico é fundamental para não zerar a redação."
+            ],
+            "identidade": [
+                "Eu sou a IA Suprema criada para alunos do Farias Brito. Sou rápida, irônica e inteligente.",
+                "Pode me chamar de 'O Oráculo do Ceará'. Meu objetivo é sua aprovação."
+            ],
+            "social": [
+                "E aí! Tudo na paz? Já fez os simulados da semana?",
+                "Olá! Menos papo furado e mais estudo, vamos lá!"
+            ]
+        }
+
+        base_res = random.choice(respostas.get(categoria, ["Não processei isso. Repita, mas com foco!"]))
+        return f"{prefixo_memoria}{base_res} (Confiança: {confianca:.2f})"
 
 # ==============================================================================
-# 2. TREINAMENTO (MACHINE LEARNING)
-# ==============================================================================
-
-# Gerando os 3.000 (ou mais) dados agora
-dados_treino = gerar_dataset_monstruoso(3000)
-
-print(f"📊 Dataset gerado com sucesso! Total de exemplos: {len(dados_treino)}")
-print(f"Exemplo de dado gerado: {dados_treino[0]}")
-
-# Separando X (texto) e y (categoria)
-X_treino = [item[0] for item in dados_treino]
-y_treino = [item[1] for item in dados_treino]
-
-# Criando e treinando o modelo
-modelo = make_pipeline(CountVectorizer(), MultinomialNB())
-print("🧠 Treinando a IA... (Isso pode levar uns segundos)")
-modelo.fit(X_treino, y_treino)
-print("✅ IA Treinada e pronta para o combate!")
-
-# ==============================================================================
-# 3. O CÉREBRO DAS RESPOSTAS (Lógica de Resposta Complexa)
-# ==============================================================================
-def responder(texto_usuario):
-    # Previsão da categoria
-    categoria = modelo.predict([texto_usuario])[0]
-    probabilidade = np.max(modelo.predict_proba([texto_usuario]))
-    
-    # Respostas baseadas na categoria detectada
-    if probabilidade < 0.45: # Se a IA estiver confusa
-        return "Cara, não entendi nada. Fala português, por favor. Sou do FB, não adivinha."
-    
-    if categoria == "matematica":
-        return f"Isso é matemática. Use a lógica ou uma calculadora. Eu sei que é sobre números! (Certeza: {probabilidade:.2f})"
-    
-    elif categoria == "historia":
-        return f"História é fascinante. O Brasil tem mais reviravoltas que novela das nove. Quer saber datas ou nomes? (Certeza: {probabilidade:.2f})"
-    
-    elif categoria == "biologia":
-        return f"Biologia detectada. Lembre-se: Mitocôndria = respiração celular. O resto a gente chuta no ENEM. (Certeza: {probabilidade:.2f})"
-    
-    elif categoria == "cumprimento":
-        return "E aí, aluno! Bora estudar ou tá só enrolando?"
-    
-    elif categoria == "identidade":
-        return "Sou a IA Suprema do Farias Brito. Fui criada para garantir sua aprovação e corrigir seu português."
-    
-    return "Buguei."
-
-# ==============================================================================
-# 4. CHAT INTERATIVO
+# EXECUÇÃO DO CHAT
 # ==============================================================================
 if __name__ == "__main__":
-    print("\n" + "="*40)
-    print("      IA FARIAS BRITO - ONLINE      ")
-    print("="*40)
-    print("(Digite 'sair' para fechar)")
+    bot = IASupremaFB()
+    
+    print("\n" + "="*50)
+    print("      SISTEMA IA FARIAS BRITO - VERSÃO 2.0      ")
+    print("        (Com Memória de Curto Prazo)            ")
+    print("="*50)
     
     while True:
         try:
-            user_input = input("\nVocê: ")
-            if user_input.lower() in ['sair', 'exit', 'tchau']:
-                print("IA: Falou! Vai estudar.")
+            prompt = input("\nAluno: ")
+            if prompt.lower() in ['sair', 'exit', 'tchau']:
+                print("IA: Fui! Boa sorte no simulado de domingo.")
                 break
-            
-            resposta = responder(user_input)
+                
+            resposta = bot.responder(prompt)
             print(f"IA: {resposta}")
             
         except KeyboardInterrupt:
-            print("\nIA: Encerrando forçadamente...")
             break
